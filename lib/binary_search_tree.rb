@@ -24,7 +24,6 @@ class Tree
     @root = build_tree(arr)
   end
 
-  # returns the level 0 root node
   def build_tree(arr)
     return nil if arr.empty?
 
@@ -34,6 +33,18 @@ class Tree
     root.left = build_tree(arr_copy[0...mid])
     root.right = build_tree(arr_copy[mid + 1..arr_copy.length])
     root
+  end
+
+  def insert(value, root_node = @root)
+    node = Node.new(value)
+    return node if root_node.nil?
+
+    if node < root_node
+      root_node.left = insert(value, root_node.left)
+    elsif node > root_node
+      root_node.right = insert(value, root_node.right)
+    end
+    root_node
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
