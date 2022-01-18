@@ -58,6 +58,7 @@ class Tree
       end
     end
     delete_leaf(parent, value) if root.left.nil? && root.right.nil?
+    delete_single_child(parent, root) if root.left.nil? || root.right.nil?
   end
 
   def delete_leaf(parent, value)
@@ -65,6 +66,14 @@ class Tree
       parent.left = nil
     elsif value > parent.data
       parent.right = nil
+    end
+  end
+
+  def delete_single_child(parent, node)
+    if node > parent
+      parent.right = node.right.nil? ? node.left : node.right
+    else
+      parent.left = node.right.nil? ? node.left : node.right
     end
   end
 
