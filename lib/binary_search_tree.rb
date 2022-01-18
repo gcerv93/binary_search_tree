@@ -47,6 +47,27 @@ class Tree
     root_node
   end
 
+  def delete(value)
+    root = self.root
+    until root.data == value
+      parent = root
+      if value < root.data
+        root = root.left
+      elsif value > root.data
+        root = root.right
+      end
+    end
+    delete_leaf(parent, value) if root.left.nil? && root.right.nil?
+  end
+
+  def delete_leaf(parent, value)
+    if value < parent.data
+      parent.left = nil
+    elsif value > parent.data
+      parent.right = nil
+    end
+  end
+
   def find(value, root = @root)
     return puts 'Node not found' if root.nil?
     return root if root.data == value
