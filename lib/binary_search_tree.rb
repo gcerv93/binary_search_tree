@@ -15,3 +15,12 @@ class Node
     data <=> other.data
   end
 end
+
+# class for the binary tree
+class Tree
+  attr_writer :root
+
+  def initialize(arr)
+    @root = build_tree(arr)
+  end
+end
