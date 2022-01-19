@@ -81,7 +81,7 @@ class Tree
     # find the successor to the node
     next_biggest = next_biggest.left until next_biggest.left.nil?
 
-    # find the parent to the successor node and change its data
+    # find the parent to the successor node and delete the correct child
     succ_parent = find_parent(next_biggest.data)
     if succ_parent.left == next_biggest
       succ_parent.left = nil
@@ -115,6 +115,18 @@ class Tree
     else
       find(value, root.right)
     end
+  end
+
+  def level_order
+    queue = [@root]
+    result = []
+    until queue.empty?
+      node = queue.shift
+      queue << node.left unless node.left.nil?
+      queue << node.right unless node.right.nil?
+      result << node.data
+    end
+    p result
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
