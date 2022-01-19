@@ -48,6 +48,8 @@ class Tree
   end
 
   def delete(value)
+    # root here is node to delete
+    # parent is parent of node to delete
     root = self.root
     until root.data == value
       parent = root
@@ -59,6 +61,7 @@ class Tree
     end
     delete_leaf(parent, value) if root.left.nil? && root.right.nil?
     delete_single_child(parent, root) if root.left.nil? || root.right.nil?
+    delete_double_child(parent, root, root.right) if root.left && root.right
   end
 
   def delete_leaf(parent, value)
@@ -75,6 +78,35 @@ class Tree
     else
       parent.left = node.right.nil? ? node.left : node.right
     end
+  end
+
+  def delete_double_child(node_to_delete, next_biggest)
+    # find the successor to the node
+    next_biggest = next_biggest.left until next_biggest.left.nil?
+
+    # find the parent to the successor node and change its data
+    succ_parent = find_parent(next_biggest.data)
+    if succ_parent.left == next_biggest
+      succ_parent.left = nil
+    elsif succ_parent.right == next_biggest
+      succ_parent.right = nil
+    end
+
+    # copy the successor data into the node to be deleted
+    node_to_delete.data = next_biggest.data
+  end
+
+  def find_parent(value)
+    root = self.root
+    until root.data == value
+      parent = root
+      if value < root.data
+        root = root.left
+      elsif value > root.data
+        root = root.right
+      end
+    end
+    parent
   end
 
   def find(value, root = @root)
