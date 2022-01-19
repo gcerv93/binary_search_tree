@@ -17,6 +17,7 @@ class Node
 end
 
 # class for the binary tree
+# rubocop: disable Metrics/ClassLength
 class Tree
   attr_accessor :root
 
@@ -57,6 +58,7 @@ class Tree
     elsif root.left.nil? || root.right.nil?
       delete_single_child(parent, root)
     else
+      # send right subtree to delete double child method
       delete_double_child(root, root.right)
     end
   end
@@ -122,10 +124,25 @@ class Tree
     result = []
     until queue.empty?
       node = queue.shift
+
+      # enqueue children nodes if not nil
       queue << node.left unless node.left.nil?
       queue << node.right unless node.right.nil?
+
+      # push to result depending on conditional
       result.push(block_given? ? yield(node.data) : node.data)
     end
+    result
+  end
+
+  def recursive_level_order(queue = [@root], result = [])
+    return result if queue.empty?
+
+    node = queue[0]
+    queue << node.left unless node.left.nil?
+    queue << node.right unless node.right.nil?
+    result << queue.shift.data
+    recursive_level_order(queue, result)
     result
   end
 
@@ -135,3 +152,4 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
+# rubocop: enable Metrics/ClassLength
