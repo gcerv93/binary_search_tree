@@ -124,9 +124,9 @@ class Tree
       node = queue.shift
       queue << node.left unless node.left.nil?
       queue << node.right unless node.right.nil?
-      result << node.data
+      result.push(block_given? ? yield(node.data) : node.data)
     end
-    p result
+    result
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
