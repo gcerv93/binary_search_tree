@@ -50,18 +50,15 @@ class Tree
   def delete(value)
     # root here is node to delete
     # parent is parent of node to delete
-    root = self.root
-    until root.data == value
-      parent = root
-      if value < root.data
-        root = root.left
-      elsif value > root.data
-        root = root.right
-      end
+    root = find(value)
+    parent = find_parent(value)
+    if root.left.nil? && root.right.nil?
+      delete_leaf(parent, value)
+    elsif root.left.nil? || root.right.nil?
+      delete_single_child(parent, root)
+    else
+      delete_double_child(root, root.right)
     end
-    delete_leaf(parent, value) if root.left.nil? && root.right.nil?
-    delete_single_child(parent, root) if root.left.nil? || root.right.nil?
-    delete_double_child(parent, root, root.right) if root.left && root.right
   end
 
   def delete_leaf(parent, value)
