@@ -155,6 +155,15 @@ class Tree
     result
   end
 
+  def preorder(root = @root, result = [], &block)
+    return result if root.nil?
+
+    result.push(block_given? ? yield(root.data) : root.data)
+    preorder(root.left, result, &block)
+    preorder(root.right, result, &block)
+    result
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
