@@ -138,11 +138,20 @@ class Tree
   def recursive_level_order(queue = [@root], result = [])
     return result if queue.empty?
 
-    node = queue[0]
+    node = queue.shift
     queue << node.left unless node.left.nil?
     queue << node.right unless node.right.nil?
-    result << queue.shift.data
+    result.push(block_given? ? yield(node.data) : node.data)
     recursive_level_order(queue, result)
+    result
+  end
+
+  def inorder(root = @root, result = [], &block)
+    return result if root.nil?
+
+    inorder(root.left, result, &block)
+    result.push(block_given? ? yield(root.data) : root.data)
+    inorder(root.right, result, &block)
     result
   end
 
