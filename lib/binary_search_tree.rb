@@ -191,6 +191,13 @@ class Tree
     count
   end
 
+  def balanced?
+    left = height(root.left)
+    right = height(root.right)
+
+    right - left > 1 || left - right > 1 ? false : true
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
