@@ -198,6 +198,11 @@ class Tree
     right - left > 1 || left - right > 1 ? false : true
   end
 
+  def rebalance
+    tree_array = level_order
+    @root = build_tree(tree_array)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
